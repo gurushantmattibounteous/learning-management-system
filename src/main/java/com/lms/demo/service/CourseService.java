@@ -6,7 +6,7 @@ import com.lms.demo.dto.CourseDTO;
 import com.lms.demo.dto.LessonDTO;
 import com.lms.demo.model.Course;
 import com.lms.demo.model.Lesson;
-import com.lms.demo.model.Module;
+import com.lms.demo.model.CourseModule;
 import com.lms.demo.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,21 +44,21 @@ public class CourseService {
 
     private CourseDTO toFullDTO(Course course) {
         CourseDTO dto = toSimpleDTO(course);
-        if (course.getModules() != null) {
-            dto.setModules(course.getModules().stream()
+        if (course.getCourseModules() != null) {
+            dto.setModules(course.getCourseModules().stream()
                     .map(this::toModuleDTO)
                     .toList());
         }
         return dto;
     }
 
-    private CourseDTO.ModuleDTO toModuleDTO(Module module) {
+    private CourseDTO.ModuleDTO toModuleDTO(CourseModule courseModule) {
         CourseDTO.ModuleDTO dto = new CourseDTO.ModuleDTO();
-        dto.setId(module.getId());
-        dto.setTitle(module.getTitle());
-        dto.setOrderIndex(module.getOrderIndex());
-        if (module.getLessons() != null) {
-            dto.setLessons(module.getLessons().stream()
+        dto.setId(courseModule.getId());
+        dto.setTitle(courseModule.getTitle());
+        dto.setOrderIndex(courseModule.getOrderIndex());
+        if (courseModule.getLessons() != null) {
+            dto.setLessons(courseModule.getLessons().stream()
                     .map(this::toLessonDTO)
                     .toList());
         }

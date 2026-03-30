@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 @Table(name = "modules")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-public class Module {
+public class CourseModule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,8 @@ public class Module {
     @Column(nullable = false)
     private Integer orderIndex;
 
-    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "courseModule", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OrderBy("orderIndex ASC")
     private List<Lesson> lessons;
 }
