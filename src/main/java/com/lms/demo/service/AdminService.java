@@ -58,7 +58,7 @@ public class AdminService {
     // --- Module ---
 
     @Transactional
-    public void addModule(Long courseId, AdminModuleRequest req) {
+    public CourseDTO.ModuleDTO addModule(Long courseId, AdminModuleRequest req) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
         CourseModule module = CourseModule.builder()
@@ -66,13 +66,18 @@ public class AdminService {
                 .title(req.getTitle())
                 .orderIndex(req.getOrderIndex())
                 .build();
-        moduleRepository.save(module);
+        module = moduleRepository.save(module);
+        CourseDTO.ModuleDTO dto = new CourseDTO.ModuleDTO();
+        dto.setId(module.getId());
+        dto.setTitle(module.getTitle());
+        dto.setOrderIndex(module.getOrderIndex());
+        return dto;
     }
 
     // --- Lesson ---
 
     @Transactional
-    public void addLesson(Long moduleId, AdminLessonRequest req) {
+    public LessonDTO addLesson(Long moduleId, AdminLessonRequest req) {
         CourseModule module = moduleRepository.findById(moduleId)
                 .orElseThrow(() -> new RuntimeException("Module not found"));
         Lesson lesson = Lesson.builder()
@@ -82,7 +87,14 @@ public class AdminService {
                 .durationMinutes(req.getDurationMinutes())
                 .orderIndex(req.getOrderIndex())
                 .build();
-        lessonRepository.save(lesson);
+        lesson = lessonRepository.save(lesson);
+        LessonDTO dto = new LessonDTO();
+        dto.setId(lesson.getId());
+        dto.setTitle(lesson.getTitle());
+        dto.setContentUrl(lesson.getContentUrl());
+        dto.setDurationMinutes(lesson.getDurationMinutes());
+        dto.setOrderIndex(lesson.getOrderIndex());
+        return dto;
     }
 
     // --- Quiz ---

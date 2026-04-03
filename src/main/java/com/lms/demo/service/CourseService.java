@@ -10,6 +10,7 @@ import com.lms.demo.model.CourseModule;
 import com.lms.demo.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class CourseService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public CourseDTO getCourseById(Long id) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found"));

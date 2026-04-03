@@ -53,7 +53,7 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- JJWT 0.11.5 — three jars required -->
+        <!-- JJWT 0.11.5 —  -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>

@@ -25,8 +25,12 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getCourseById(id));
     }
 
-    @GetMapping("/{id}/modules")
-    public ResponseEntity<CourseDTO> getCourseWithModules(@PathVariable Long id) {
-        return ResponseEntity.ok(courseService.getCourseById(id));
-    }
+//    @GetMapping("/{id}/modules")
+//    public ResponseEntity<CourseDTO> getCourseWithModules(@PathVariable Long id) {
+//        return ResponseEntity.ok(courseService.getCourseById(id));
+//    }
+@GetMapping("/{id}/modules")
+public ResponseEntity<List<CourseDTO.ModuleDTO>> getCourseModules(@PathVariable Long id) {
+    return ResponseEntity.ok(courseService.getCourseById(id).getModules());
+}
 }

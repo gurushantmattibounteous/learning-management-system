@@ -4,11 +4,14 @@ import com.lms.demo.dto.ProgressDTO;
 import com.lms.demo.model.Lesson;
 import com.lms.demo.model.Progress;
 import com.lms.demo.model.User;
+import com.lms.demo.repository.EnrollmentRepository;
 import com.lms.demo.repository.LessonRepository;
 import com.lms.demo.repository.ProgressRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +23,7 @@ public class ProgressService {
     private final ProgressRepository progressRepository;
     private final LessonRepository lessonRepository;
     private final EnrollmentService enrollmentService;
+    private final EnrollmentRepository enrollmentRepository; // ADDED
 
     @Transactional
     public void markLessonComplete(Long lessonId) {
@@ -41,6 +45,11 @@ public class ProgressService {
     @Transactional(readOnly = true)
     public ProgressDTO getCourseProgress(Long courseId) {
         User user = enrollmentService.getCurrentUser();
+
+        // ADDED: return 404 if not enrolled
+        if (!enrollmentRepository.existsByUserIdAndCourseId(user.getId(), courseId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not enrolled in this course");
+        }
 
         List<Lesson> allLessons = lessonRepository.findByCourseModuleCourseId(courseId);
         long total = allLessons.size();

@@ -3,6 +3,7 @@ package com.lms.demo.service;
 import com.lms.demo.config.JwtUtil;
 import com.lms.demo.dto.AuthRequest;
 import com.lms.demo.dto.AuthResponse;
+import com.lms.demo.dto.UserSummaryDTO;
 import com.lms.demo.model.User;
 import com.lms.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +32,11 @@ public class AuthService {
                 .role(User.Role.STUDENT)
                 .build();
         userRepository.save(user);
+        
         String token = jwtUtil.generateToken(user.getEmail());
-        return new AuthResponse(token, user.getEmail(), user.getRole().name());
+        UserSummaryDTO summary = mapToSummary(user);
+        
+        return new AuthResponse(token, user.getEmail(), user.getRole().name(), summary);
     }
 
     public AuthResponse login(AuthRequest request) {
@@ -41,6 +45,18 @@ public class AuthService {
         );
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
         String token = jwtUtil.generateToken(user.getEmail());
-        return new AuthResponse(token, user.getEmail(), user.getRole().name());
+        UserSummaryDTO summary = mapToSummary(user);
+        
+        return new AuthResponse(token, user.getEmail(), user.getRole().name(), summary);
+    }
+
+    private UserSummaryDTO mapToSummary(User user) {
+        UserSummaryDTO summary = new UserSummaryDTO();
+        summary.setId(user.getId());
+        summary.setName(user.getName());
+        summary.setEmail(user.getEmail());
+        summary.setRole(user.getRole().name());
+        summary.setCreatedAt(user.getCreatedAt());
+        return summary;
     }
 }

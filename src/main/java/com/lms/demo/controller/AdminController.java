@@ -1,7 +1,5 @@
 package com.lms.demo.controller;
 
-
-
 import com.lms.demo.dto.*;
 import com.lms.demo.service.AdminService;
 import jakarta.validation.Valid;
@@ -38,17 +36,15 @@ public class AdminController {
     }
 
     @PostMapping("/courses/{id}/modules")
-    public ResponseEntity<Void> addModule(@PathVariable Long id,
-                                          @RequestBody AdminModuleRequest req) {
-        adminService.addModule(id, req);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<CourseDTO.ModuleDTO> addModule(@PathVariable Long id,
+                                                         @RequestBody AdminModuleRequest req) {
+        return ResponseEntity.ok(adminService.addModule(id, req));
     }
 
     @PostMapping("/modules/{id}/lessons")
-    public ResponseEntity<Void> addLesson(@PathVariable Long id,
-                                          @RequestBody AdminLessonRequest req) {
-        adminService.addLesson(id, req);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<LessonDTO> addLesson(@PathVariable Long id,
+                                               @RequestBody AdminLessonRequest req) {
+        return ResponseEntity.ok(adminService.addLesson(id, req));
     }
 
     @PostMapping("/quizzes")
